@@ -1,0 +1,349 @@
+---
+title: "Tema 2 - Probabilidad"
+author: " Ricardo Alberich, Juan Gabriel Gomila y Arnau Mir"
+date: ''
+output:
+  ioslides_presentation: 
+    css: Mery_style.css
+    keep_md: no
+    logo: Images/matriz_mov.gif
+    widescreen: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Probabilidades Básicas
+
+## Definiciones básicas
+
+<l class="definition"> Experimento aleatorio</l>: experimento que  repetido  en las mismas condiciones puede dar resultados diferentes, pero que a largo plazo son predecibles.
+
+
+<l class="definition"> Espacio muestral</l>: el conjunto  $\Omega$ formado por todos los sucesos elementales del experimento aleatorio.
+
+<l class="definition"> Suceso </l> : Cualquier subconjunto del espacio muestral.
+
+ Alguno sucesos notables que merece la pena nombrar son:
+
+* <l class="definition">Suceso seguro o cierto</l>: $\Omega$
+* <l class="definition">Suceso imposible o vacio</l>: $\emptyset$
+* <l class="definition">Partes de un conjunto</l>: $\mathcal{P}(\Omega)$: conjunto de todos los sucesos del experimento aleatorio (es decir, el conjunto de todos los subconjuntos de $\Omega$)
+
+## Operaciones con sucesos
+
+Si tenemos dos sucesos $A,B\subseteq \Omega$, podemos definir:
+
+* $\Omega$: *suceso* total o *seguro*.
+* $\emptyset$: suceso  *vacío* o *imposible*.
+* $A\cup B$: suceso *unión*; el que ocurre si sucede $A$ o $B$.
+* $A\cap B$: suceso *intersección*; el que ocurre si sucede $A$ y $B$.
+* $A^c$: suceso *complementario*  el que sucede si NO sucede $A$.
+* $A- B=A\cap B^c$: suceso *diferencia*, que acontece  si sucede $A$ y NO sucede $B$.
+
+<l class="definition"> Sucesos incompatibles</l>: $A$ y $B$ son *incompatibles* (o *disjuntos*) cuando  $A\cap B=\emptyset$.
+
+
+## Propiedades
+
+<l class="definition">Conmutativas</l>: 
+
+$$A\cup B=B\cup A, \quad A\cap B=B\cap A$$
+
+<l class="definition">Asociativas</l>: 
+
+$$A\cup(B\cup C)=(A\cup B)\cup C, \quad A\cap(B\cap C)=(A\cap B)\cap C$$
+
+<l class="definition">Distributivas</l>: 
+
+$$A\cap(B\cup C)=(A\cap B)\cup (A\cap C), \quad A\cup(B\cap C)=(A\cup B)\cap (A\cup C)$$
+
+
+
+
+
+## Propiedades 
+
+<l class="definition"> Complementario del complementario </l> 
+$$(A^c)^c=A$$
+
+
+<l class="definition">Leyes de De Morgan</l>
+
+$$(A\cup B)^c=A^c\cap B^c$$
+
+
+$$(A\cap B)^c=A^c\cup B^c$$
+
+
+## Definición de probabilidad
+
+Sea $\Omega$ el espacio muestral de un experimento aleatorio. 
+Supongamos que el número de posibles resultados, por el momento, es finito.
+
+Una probabilidad sobre $\Omega$ es una aplicación $P:\mathcal{P}(\Omega)\to [0,1]$ con las siguientes propiedades:
+
+1. $0\leq P(A)\leq 1$, para todo suceso $A$.
+2. $P(\Omega)=1$.
+3. Si $\{A_1,A_2,\ldots,A_n\}$ son sucesos disjuntos dos a dos, entonces
+
+$$
+P(A_1\cup A_2\cup \cdots \cup A_n)=P(A_1)+P(A_2)+\cdots +P(A_n)
+$$
+
+Si $a\in \Omega$ es un suceso elemental cometeremos el abuso de notación de poner $P(a)$ en lugar de $P(\{a\})$
+
+
+## Propiedades
+
+<div class="prop"> Propiedades básicas de la probabilidad</div>
+* $P(\emptyset)=0$.
+
+* $P(A-B)=P(A)-P(A\cap B)$.
+
+<div class="center">
+![](Images/proba1dibujos/A-B.jpg){height="200px"}
+</div>
+
+* Si $B\subseteq A$, entonces $0\leq P(B)\leq P(A)$.
+
+* $P(A^c)=1-P(A)$.
+
+## Propiedades
+
+* $P(A\cup B)=P(A)+P(B)-P(A\cap B)$ 
+
+<div class="center">
+![](Images/proba1dibujos/A-B.jpg){height="200px"}
+</div>
+
+## Propiedades
+
+* $$\begin{eqnarray*}
+P(A\cup B\cup C)&=&P(A)+P(B)+P(C)  \\ &&-P(A\cap B)-P(A\cap C)-P(B\cap C)  +P(A\cap B\cap C)
+\end{eqnarray*}$$
+
+<div class="center">
+![](Images/proba1dibujos/tresconjunts.jpg){height="200px"}
+</div>
+
+$$P(A\cup B\cup C)=P(1)+P(2)+P(3)+P(4)+P(5)+P(6)+P(7).$$
+
+## Propiedades 
+
+* Si $A=\{a_1,a_2,\ldots,a_k\}$, entonces
+$$
+P(A)=P(a_1)+P(a_2)+\cdots+P(a_k).
+$$
+
+* Si todos los sucesos elementales tienen la misma probabilidad,
+$$
+P(A)=\frac{|A|}{|\Omega|}\Big(=\frac{\mbox{casos favorables}}{\mbox{casos posibles}}\Big).
+$$
+
+
+
+# Probabilidad condicionada
+
+
+## Probabilidad condicionada
+
+<l class="definition">Probabilidad condicionada</l>: Dados dos sucesos  $A$  y $B$, con $P(A)>0$, la  probabilidad $P(B|A)$ de $B$ condicionado a $A$ es la probabilidad
+
+* de que suceda  $B$ suponiendo que pasa $A$,
+* de que si pasa $A$, entonces suceda $B$,
+* de que un resultado de $A$ también pertenezca a $B$.
+
+Se calcula a través de la definición:
+
+$$
+P(B|A)=\frac{P(A\cap B)}{P(A)}.
+$$
+
+
+
+
+## Probabilidad condicionada. Propiedades
+
+La probabilidad condicionada es una probabilidad
+
+<div class="prop"> Proposición </div>
+
+Sea $A\subseteq \Omega$ un suceso tal que $P(A)>0$, entonces
+
+$$
+\begin{array}{rccl}
+P(-|A):& \mathcal{P}(\Omega) & \to & [0,1]\\
+&B & \mapsto & P(B|A).
+\end{array}
+$$
+satisface las propiedades de las probabilidades, como por ejemplo:
+
+$$
+\begin{array}{l}
+P(B^c|A)=1-P(B|A),\\
+P(B_1\cup B_2|A)=P(B_1|A)+P(B_2|A)-P(B_1\cap B_2|A).
+\end{array}
+$$
+
+<div class="exercise">
+
+
+
+
+
+
+## Teorema de la probabilidad total
+
+<l class="prop">Teorema de la probabilidad total</l>
+
+Dados dos sucesos $A$ y $B$ se tiene que 
+
+$$
+\begin{array}{rl}
+P(B)&= P(B\cap A) +P(B\cap A^c)\\
+& =P(A)\cdot P(B|A)+ P(A^c)\cdot P(B|A^c).
+\end{array}
+$$
+
+
+## Teorema de la probabilidad total
+
+<l class="prop">Partición del espacio espacio muestral</l>
+
+Los sucesos $A_1,A_2,\ldots, A_n$ son  una **partición** del espacio muestral $\Omega$ de un determinado experimento aleatorio, si cumplen las condiciones siguientes:
+
+1. $A_1\cup A_2\cup\ldots\cup A_n=\Omega$,
+2. $A_1,A_2,\ldots,A_n$ son incompatibles dos a dos ($A_i\cap A_j=\emptyset$).
+
+<div class="prop">Teorema de la probabilidad total</div>
+Sea $A_1,A_2,\ldots,A_n$ una partición de $\Omega$. Sea $B$ un suceso cualquiera. Entonces
+
+$$
+\begin{array}{rl}
+P(B)&= P(B\cap A_1)+\cdots +P(B\cap A_n)\\
+& =P(A_1)\cdot P(B|A_1)+\ldots+P(A_n)\cdot P(B|A_n).
+\end{array}
+$$
+
+
+
+## Clasificación o Diagnósticos
+
+Consideremos alguna de las siguientes situaciones:
+
+* Un algoritmo detecta si una transacción con tarjeta de crédito es fraude o no.
+* Un algoritmo detecta si  tiene o no que mostrar un anuncio en una web.
+* Un prueba de embarazo. 
+* Una prueba médica  para  una enfermedad concreta.
+
+Nos ceñiremos a la casuística más elemental  el algoritmo de clasificación o la diagnosis solo da dos resultado **Positivo** (sí tienes la enfermedad, sí es un fraude) o **Negativo** (en caso contrario). 
+
+## Clasificación o Diagnósticos
+
+En todas estas situaciones  podemos calcular lo que se llama **matriz de confusión** que representa todas las situaciones posibles. En el caso de estudiar una condición de tipo binario, 
+
+| | El Test da Positivo  | El Test da Negativo  |
+|:--|:--:|:--:|
+|Condición Positiva | Correcto | Error|
+|Condición Negativa | Error | Correcto|
+
+
+## Clasificación o Diagnósticos
+
+<div class="center">
+[![SiliconValley](https://img.youtube.com/vi/pqTntG1RXSY/0.jpg)](https://www.youtube.com/watch?v=pqTntG1RXSY "SiliconValley")
+</div>
+
+
+## Clasificación o Diagnósticos
+
+En un diagnósticos de una  cierta  condición (por ejemplo, test embarazo, test de enfermedad), tenemos dos tipos de sucesos:
+
+* $T$: el test da positivo,
+* $M$: el sujeto satisface la condición.
+
+<l class="definition"> Falsos Positivos y Falsos Negativos</l>
+
+* **Falsos positivos** $T\cap M^c$: El test da positivo, pero la condición no se da,
+* **Coeficiente de falsos positivos** $P(T|M^c)$,
+* **Falsos negativos** $T^c\cap M$: El test da negativo, pero la condición sí que se da,
+* **Coeficiente de falsos negativos**: $P(T^c|M)$.
+
+# Bayes
+
+## Fórmula de Bayes
+
+<div class="definition"> Teorema de Bayes </div>
+
+Sean $A$ y $B$ dos sucesos. Si $P(B)>0$, entonces
+
+$$
+\begin{array}{rl}
+P(A|B) & =\dfrac{P(A)\cdot P(B|A)}{P(B)}
+&=\dfrac{P(A)\cdot P(B|A)}{P(A)\cdot P(B|A)+P(A^c)\cdot P(B|A^c)}.
+\end{array}
+$$
+
+<div class="example">
+
+
+
+## Fórmula de Bayes
+
+<l class="definition"> Teorema de Bayes </l>
+
+
+Sea $A_1,A_2,\ldots,A_n$ una partición de $\Omega$. Sea $B$ un suceso tal que $P(B)>0$. entonces(para cualquier $i=1,2,\ldots,n$):
+
+$$
+\begin{array}{rl}
+P(A_i|B) & =\dfrac{P(A_i)\cdot P(B|A_i)}{P(B)}\\
+& =\dfrac{P(A_i)\cdot P(B|A_i)}{P(A_1)\cdot P(B|A_1)+\cdots+P(A_n)\cdot P(B|A_n)},
+\end{array}
+$$
+
+
+
+# Independencia de sucesos
+
+## Sucesos independientes
+
+<l class="definition"> Sucesos Independientes </l>
+
+Diremos que  los sucesos $A$ y  $B$ son **independientes** si  $P(A\cap B)=P(A)\cdot P(B)$.
+
+
+$A_1,\ldots, A_n$ son sucesos **independientes** cuando, para  toda
+subfamilia $A_{i_1},\ldots,A_{i_k}$,
+
+$$
+P(A_{i_1}\cap \cdots\cap A_{i_k})=P(A_{i_1})\cdots P(A_{i_k}).
+$$
+
+
+## Sucesos independientes
+
+<l class="prop"> Proposición </l>
+
+Dados dos sucesos  $A$ y $B$ con  $P(A),P(B)>0$,  las siguientes afirmaciones son equivalentes:
+
+1. $A$ y $B$ son independientes.
+2. $P(A|B)=P(A)$.
+3. $P(B|A)=P(B)$.
+
+
+## Sucesos independientes
+
+<l class="prop"> Proposición </l>
+
+Las siguientes afirmaciones son equivalentes:
+
+1. $A$ y $B$ son independientes
+2. $A^c$ y $B$ son independientes.
+3. $A$ y $B^c$ son independientes.
+4. $A^c$ y $B^c$ son independientes.
+
+

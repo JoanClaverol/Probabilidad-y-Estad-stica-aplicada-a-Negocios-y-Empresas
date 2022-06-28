@@ -1,0 +1,540 @@
+---
+title: "Ejemplos contrastes  de hipótesis de dos muestras"
+author: "Ricardo Alberich, Juan Gabriel Gomila y Arnau Mir"
+date: ''
+output:
+  beamer_presentation: 
+    theme: Warsaw
+    includes: 
+      in_header: "preamble.tex"
+  slidy_presentation:
+    incremental: no
+  ioslides_presentation:
+    incremental: no
+---
+
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(MASS)
+```
+
+
+## Comparación de  las medias de  las ventas con dos estrategias de marketing
+
+<div class="example">
+
+**Ejemplo**
+
+Un \blue{jefe de marketing quiere evaluar  la eficacia de dos  estrategias de ventas  $M_1$ y $M_2$}.
+Se quiere averiguar si \red{las ventas  medias en euros de  cada campaña son iguales}.
+
+Para ello se han realizado dos  muestras  seleccionando al azar un conjunto de clientes para  la estrategia $M_1$ y  otro para la $M_2$. Se muestre la variable $X$= venta en euros para cada observación/cliente.
+
+\red{Desconocemos las dos desviaciones típicas poblacionales} $\sigma_1$ y $\sigma_2$ de  de las ventas para cada una de las campañas.
+</div>
+
+## Comparación de  las medias de  las ventas con dos estrategias de marketing
+
+<div class="example">
+```{r,echo=FALSE}
+media1=101.78
+media2=105.38
+s1=6.20
+s2=5.57
+n1=60
+n2=50
+```
+
+Las dos muestras se han seleccionado de forma independiente y sus tamaños son  $n_1=`r n1`$ y $n_2=`r n2`$ respectivamente. 
+
+
+
+Las medias y las desviaciones típicas muestrales de las ventas en euros son:
+
+$$
+\overline{x}_1= `r media1` ,\  \overline{x}_2=`r media2`,\ 
+ {s}_1=`r s1`,\   {s}_2=`r s2`.
+$$
+
+</div>
+
+## Comparación de  las medias de  las ventas con dos estrategias de marketing
+
+<div class="example-sol">
+
+```{r,echo=FALSE}
+media1=101.78
+media2=105.38
+s1=6.20
+s2=5.57
+n1=60
+n2=50
+set.seed(100)
+m1=media1
+m2=media2
+x1=rnorm(n1,m1,s1)
+x2=rnorm(n2,m2,s2)
+x1_tip=scale(x1)
+x1=s1*x1_tip+m1
+sd(x1)
+mean(x1)
+x2_tip=scale(x2)
+x2=s2*x2_tip+m2
+#sd(x2)
+#mean(x2)
+#t.test(x1,x2,"less",var.equal = TRUE)
+#t.test(x1,x2,"less",var.equal = FALSE)
+#round((media1-media2)/sqrt((1/n1+1/n2)*((n1-1)*s1^2+(n2-1)*s2^2)/(n1+n2-2)),3)
+```
+
+El contraste a realizar es el siguiente:
+$$
+\left\{\begin{array}{l}
+H_0:\mu_1=\mu_2,\\
+H_1:\mu_1< \mu_2,
+\end{array}\right.
+\Longleftrightarrow
+\left\{\begin{array}{l}
+H_0:\mu_1-\mu_2=0,\\
+H_1:\mu_1- \mu_2<0,
+\end{array}\right.
+$$
+</div>
+
+## Comparación de  las medias de  las ventas con dos estrategias de marketing $\sigma_1=\sigma_2$
+
+<div class="example-sol">
+
+Donde \blue{$\mu_1$ y $\mu_2$ representan las ventas medias en euros} para cada una de las dos campañas de marketing $M_1$ y $M_2$.
+
+Consideremos los dos casos anteriores:
+
+* Caso 1: \red{Suponemos $\sigma_1=\sigma_2$}.
+
+El **estadístico de contraste** es:
+
+$$
+T=\frac{\overline{x}_1-\overline{x}_2}{\sqrt{(\frac1{n_1}+\frac1{n_2})\cdot 
+\frac{((n_1-1) {s}_1^2+(n_2-1) {s}_2^2)}
+{(n_1+n_2-2)}}}\sim t_{`r n1`+`r n2`-2}=t_{`r n1+n2-2`},
+$$
+</div>
+
+## Comparación de  las medias de  las ventas con dos estrategias de marketing $\sigma_1=\sigma_2$
+
+<div class="example-sol">
+
+
+Usando los valores correspondientes de las muestras,  su valor es:
+
+$$
+t_0=\frac{`r media1`-`r media2`}{\sqrt{(\frac1{`r n1`}+\frac1{`r n2`})\frac{(`r n1-1`\cdot `r s1`^2+`r n2-1`\cdot `r s2`^2)}{`r n1+n2-2`}}}=`r round((media1-media2)/sqrt((1/n1+1/n2)*((n1-1)*s1^2+(n2-1)*s2^2)/(n1+n2-2)),3)`.
+$$
+
+</div>
+
+## Comparación de  las medias de  las ventas con dos estrategias de marketing
+<div class="example-sol">
+
+El $p$-valor será, en este caso: 
+
+$P(t_{`r n1+n2-2`}<`r round((media1-media2)/sqrt((1/n1+1/n2)*((n1-1)*s1^2+(n2-1)*s2^2)/(n1+n2-2)),4)`)\approx 
+`r round(pt((media1-media2)/sqrt((1/n1+1/n2)*((n1-1)*s1^2+(n2-1)*s2^2)/(n1+n2-2)),n1+n2-2),3)`,$
+valor muy pequeño.
+
+La decisión que tomamos, por tanto, es \red{rechazar la hipótesis de que son iguales, en favor de que ventas medias de la estrategia $M_1$ son más menores que las de la estrategia  $M_2$}.
+
+</div>
+
+
+
+
+## Comparación de  las medias de  las ventas con dos estrategias de marketing caso varianzas distintas
+
+<div class="example-sol">
+Consideremos ahora el otro caso:
+
+* Caso 2: \red{Suponemos $\sigma_1\neq \sigma_2$}.
+
+
+
+El **estadístico de contraste** será, en este caso:
+$T=\frac{\overline{X}_1-\overline{X}_2}{\sqrt{\frac{ {S}_1^2}{n_1}+\frac{ {S}_2^2}{n_2}}}\sim t_f$
+donde
+
+```{r echo=FALSE}
+f=(s1^2/n1+s2^2/n2)^2/((1/(n1-1))*(s1^2/n1)^2+(1/(n2-1))*(s2^2/n2)^2)
+T0=round((media1-media2)/sqrt(s1^2/n1+s2^2/n2),4)
+```
+
+$$
+f=
+\frac{ \left( \frac{s_1^2}{ n_1}+\frac{s_2^2}{n_2}\right)^2}
+{\frac1{n_1-1}\left(\frac{s_1^2}{n_1}\right)^2+\frac1{n_2-1}\left(\frac{s_2^2}
+{n_2}\right)^2}=
+\frac{ \left( \frac{`r s1`^2}{`r n1`}+\frac{`r s2`^2}{`r n2`}\right)^2}
+{\frac1{`r n1-1`}\left(\frac{`r s1`^2}{`r n1`}\right)^2+\frac1{`r n2-1`}\left(\frac{`r s2`^2}{`r n2`}\right)^2}=`r round(f,4)`
+.
+$$
+
+</div>
+
+## Comparación de  las medias de  las ventas con dos estrategias de marketing caso varianzas distintas
+<div class="example-sol">
+El valor que toma el estadístico anterior será: 
+$$
+t_0=\frac{`r media1`-`r media2`}{\sqrt{\frac{`r s1`^2}{`r n1`}+\frac{`r s2`^2}{`r n2`}}}=`r T0`.
+$$
+
+El **$p$-valor** del contraste será: 
+$P(t_{`r f`}\leq `r T0`)=`r round(pt(T0,f),6)`,$ valor muy pequeño.
+
+
+</div>
+
+## Comparación de  las medias de  las ventas con dos estrategias de marketing caso varianzas distintas
+
+<div class="example-sol">
+La decisión que tomamos en este caso es la misma que en el caso anterior: \blue{rechazar la hipótesis de que las ganancias medias de ejecución son iguales, en favor de que las ventas bajo $M_1$ son menores que bajo $M_2$}.
+ 
+
+La decisión final, al haber decidido lo mismo en los dos casos, será concluir  que \red{la estrategia $M_1$ tiene ganancia media menor que la $M_2$}.
+
+</div>
+
+
+
+
+## Contrastes para dos proporciones $p_1$ y $p_2$: Seguros de vida en créditos al consumo.
+
+ Contraste de dos proporciones muestras independientes tamaños muestrales grandes
+
+<div class="exercise">
+Se toman una muestra de \blue{100 créditos al consumo  en la Región A  y  otra  muestra de 50  créditos de la Región B}.
+
+Se quiere saber si las \red{proporciones de contratos de crédito con seguro  de vida  son iguales en ambas regiones}.
+
+En la muestra región A, 20 hipotecas tienen seguro, y en la región B son 12.
+
+Queremos contrastar la hipótesis de igualdad de proporciones al
+nivel de significación $0.05$, y calcular el intervalo de confianza
+para la diferencia de proporciones para este $\alpha$.
+</div>
+
+## Contrastes para dos proporciones $p_1$ y $p_2$: Seguros de vida en créditos al consumo.
+
+<div class="example-sol">
+Fijémonos que \red{los tamaños de las muestras (100 y 50) son bastante grandes}.
+
+El contraste pedido es el siguiente:
+
+$$
+\left\{\begin{array}{l}
+H_0:p_1=p_2,\\
+H_1:p_1\neq p_2,
+\end{array}\right.
+$$
+donde $p_1$ y $p_2$ representan las proporciones de créditos que tienen seguro  vida  las regiones A y B, respectivamente.
+
+
+</div>
+
+## Contrastes para dos proporciones $p_1$ y $p_2$: Seguros de vida en créditos al consumo.
+
+<div class="example-sol">
+
+El **estadístico de contraste** es:
+
+$$
+Z=\frac{\widehat{p}_1 -\widehat{p}_2}{
+\sqrt{\Big(\frac{n_1 \widehat{p}_1 +n_2 \widehat{p}_2}{n_1
++n_2}\Big)\Big(1-\frac{n_1 \widehat{p}_1 +n_2 \widehat{p}_2}{n_1
++n_2}\Big)\Big(\frac1{n_1}+\frac1{n_2}
+\Big)}}.
+$$
+
+```{r,echo=FALSE}
+n1=100
+n2=50
+x1=20
+x2=12
+p1=x1/n1
+p2=x2/n2
+```
+Las proporciones muestrales son: 
+
+$$
+\widehat{p}_1 =\frac{`r x1`}{`r n1`}=`r x1/n1`,\quad \widehat{p}_2 = \frac{`r x2`}{`r n2`}=`r x2/n2`.
+$$
+
+</div>
+
+## Contrastes para dos proporciones $p_1$ y $p_2$: Seguros de vida en créditos al consumo.
+
+<div class="example-sol">
+Si hallamos el valor que toma el **estadístico de contraste** para las proporciones muestrales anteriores, obtenemos:
+$$
+z_0=\frac{`r p1` -`r p2`}{
+\sqrt{\Big(\frac{`r x1`+`r x2`}{`r n1`+`r n2`}\Big)\Big(1-\frac{`r x1` +`r x2`}{`r n1`+`r n2`}\Big)\Big(\frac1{`r n1`}+\frac1{`r n2`}\Big)}}=`r round((p1-p2)/sqrt(((x1+x2)/(n1+n2))*(1-(x1+x2)/(n1+n2))*(1/n1+1/n2)),3)`.
+$$
+
+</div>
+
+## Contrastes para dos proporciones $p_1$ y $p_2$: Seguros de vida en créditos al consumo.
+
+<div class="example-sol">
+El **$p$-valor** será: $2\cdot P(Z\geq |`r round((p1-p2)/sqrt(((x1+x2)/(n1+n2))*(1-(x1+x2)/(n1+n2))*(1/n1+1/n2)),3)`|)=`r round(2*pnorm(abs((p1-p2)/sqrt(((x1+x2)/(n1+n2))*(1-(x1+x2)/(n1+n2))*(1/n1+1/n2))),lower.tail=FALSE),3)`.$
+
+Decisión: \blue{como el $p$-valor es grande y mayor que $\alpha=0.05$, aceptamos la hipótesis que las dos proporciones 
+son la misma al no tener evidencias suficientes para rechazarla}.
+
+El intervalo de confianza para $p_1-p_2$
+al nivel de confianza $(1-\alpha)\cdot 100\%$ en un contraste bilateral es
+$$
+\begin{array}{l}
+\left(\widehat{p}_1-\widehat{p}_2-z_{1-\frac{\alpha}2}\sqrt{\Big(\frac{n_1 \widehat{p}_1 +n_2 \widehat{p}_2}{n_1
++n_2}\Big)\Big(1-\frac{n_1 \widehat{p}_1 +n_2 \widehat{p}_2}{n_1
++n_2}\Big)\Big(\frac1{n_1}+\frac1{n_2}
+\Big)},\right.\\
+\quad
+\left.\widehat{p}_1-\widehat{p}_2+z_{1-\frac{\alpha}2}\sqrt{\Big(\frac{n_1 \widehat{p}_1 +n_2 \widehat{p}_2}{n_1
++n_2}\Big)\Big(1-\frac{n_1 \widehat{p}_1 +n_2 \widehat{p}_2}{n_1
++n_2}\Big)\Big(\frac1{n_1}+\frac1{n_2}
+\Big)}
+\right)
+\end{array}
+$$
+</div>
+
+## Contrastes para dos proporciones $p_1$ y $p_2$: Seguros de vida en créditos al consumo.
+
+<div class="example-sol">
+
+
+en nuestro caso es:
+
+$$
+(`r p1` -`r p2`-`r round(qnorm(0.975),3)`\cdot `r round(sqrt(((x1+x2)/(n1+n2))*(1-(x1+x2)/(n1+n2))*(1/n1+1/n2)),3)`, `r p1`-`r p2` +`r round(qnorm(0.975),3)`\cdot `r round(sqrt(((x1+x2)/(n1+n2))*(1-(x1+x2)/(n1+n2))*(1/n1+1/n2)),3)`) =(`r round(p1-p2-qnorm(0.975)*sqrt(((x1+x2)/(n1+n2))*(1-(x1+x2)/(n1+n2))*(1/n1+1/n2)),3)`,`r round(p1-p2+qnorm(0.975)*sqrt(((x1+x2)/(n1+n2))*(1-(x1+x2)/(n1+n2))*(1/n1+1/n2)),3)`).
+$$
+
+Observemos que contiene el 0. Por tanto no podemos rechazar que $p_1-p_2=0$ llegando a la misma conclusión que con el **$p$-valor**.
+</div>
+
+
+
+
+
+
+
+
+##  Uso de datos móviles con dos tipos de tarifas:BigA y BigB
+
+
+<div class="example">
+
+Se desea comparar el \blue{consumo de datos en Gigas con dos tipos de tarifas  de datos móviles BigA y BigB}. Se toma una muestra de  25  usuarios de la tarifa BigA y 36  de la BigB.
+Se midió  el consumo mensual  en Gigas de los usuarios de cada una de las muestras. El resumen de los resultados se muestra en la siguiente tabla.
+</div>
+
+<div class="center">
+| | $n$    | $\overline{x}$  | s |
+|-------------------|-------------------|---------|----------|
+| 1. BigA   | 25 | $869.8$     | $106.7$ |
+| 2. BigB  | 36 | $665$ | $133.7$ |
+</div>
+
+
+<div class="example">
+
+\red{¿Se observan diferencias significativas entre BigA y BigB?} 
+
+Supondremos que los datos anteriores provienen de poblaciones aproximadamente normales.
+
+</div>
+
+## Uso de datos móviles con dos tipos de tarifas:BigA y BigB
+<div class="example-sol">
+El contraste a realizar es el siguiente:
+$$
+\left\{\begin{array}{l}
+H_0:\mu_1=\mu_2,\\
+H_1:\mu_1\neq \mu_2,
+\end{array}\right.
+$$
+donde $\mu_1$ y $\mu_2$ representan los valores medios de consumo de las tarifas BigA y BigB, respectivamente.
+
+Antes de nada, tenemos que \red{averiguar si las varianzas de los dos grupos son iguales o no} ya que es un parámetro a usar en el contraste a realizar.
+
+Por tanto, en primer lugar, realizaremos el contraste:
+$$
+\left\{\begin{array}{l}
+H_0:\sigma_1=\sigma_2\\
+H_1:\sigma_1\neq \sigma_2
+\end{array}\right.
+$$
+donde $\sigma_1$ y $\sigma_2$ representan las desviaciones típicas de las tarifas BigA y BigB, respectivamente..
+
+</div>
+
+```{r,echo=FALSE}
+n1=25
+n2=36
+x1=869.8
+x2=665
+s1=106.7
+s2=133.7
+f0=s1^2/s2^2
+```
+
+
+## Uso de datos móviles con dos tipos de tarifas:BigA y BigB
+<div class="example-sol">
+
+El **Estadístico de contraste** para el contraste anterior es: $F=\frac{ {S}_1^2}{ {S}_2^2}\sim F_{24,35}.$
+
+El valor que toma es el siguiente: $f_0=\frac{`r s1`^2}{`r s2`^2}=`r round(s1^2/s2^2,3)`.$
+
+El **$p$-valor** para el contraste anterior vale:
+$$
+\begin{array}{l}
+\min\{2\cdot P(F_{n_1-1,n_2-1}\leq f_0),2\cdot P(F_{n_1-1,n_2-1}\geq f_0)\}= \\
+\min\{2\cdot P(F_{n_1-1,n_2-1}\leq `r round(f0,3)`),2\cdot P(F_{n_1-1,n_2-1}\geq `r round(f0,3)`)\} 
+= \\ \min\{`r round(2*pf(f0,n1-1,n2-1),3)`,`r round(2*pf(f0,n1-1,n2-1,lower.tail=FALSE),3)`\}=`r round(min(2*pf(f0,n1-1,n2-1),2*(pf(f0,n1-1,n2-1,lower.tail=FALSE))),3)`.
+\end{array}
+$$
+El **$p$-valor** es un valor grande, por tanto, concluimos que no podemos rechazar la hipótesis nula y decidimos que las varianzas del consumo de daos de ambas tarifas son iguales.
+
+</div>
+
+## Uso de datos móviles con dos tipos de tarifas:BigA y BigB
+<div class="example-sol">
+Realicemos a continuación el contraste pedido:
+$$
+\left\{\begin{array}{l}
+H_0:\mu_1=\mu_2\\
+H_1:\mu_1\neq \mu_2
+\end{array}\right.
+$$
+
+El **estadístico de contraste** al suponer que $\sigma_1= \sigma_2$, será:
+$T=\frac{\overline{X}_1-\overline{X}_2}
+{\sqrt{(\frac1{n_1}+\frac1{n_2})\cdot 
+\frac{(n_1-1) {S}_1^2+(n_2-1) {S}_2^2}
+{n_1+n_2-2}}}\sim t_{`r n1+n2-2`}$.
+
+El valor que toma dicho estadístico en los valores muestrales vale:
+$t_0=\frac{`r x1`-`r x2`}{\sqrt{(\frac1{`r n1`}+\frac1{`r n2`})\cdot 
+\frac{`r n1-1`\cdot `r s1`^2+`r n2-1`\cdot `r s2`^2}
+{`r n1`+`r n2`-2}}}=`r round((x1-x2)/sqrt((1/n1+1/n2)*((n1-1)*s1^2+(n2-1)*s2^2)/(n1+n2-2)),3)`.$
+
+
+</div>
+
+## Ejemplo
+<div class="example-sol">
+
+El **$p$-valor** del contraste será:
+$p=2\cdot P(t_{`r n1+n2-2`}\geq `r round((x1-x2)/sqrt((1/n1+1/n2)*((n1-1)*s1^2+(n2-1)*s2^2)/(n1+n2-2)),3)`)\approx 
+`r round(2*pt((x1-x2)/sqrt((1/n1+1/n2)*((n1-1)*s1^2+(n2-1)*s2^2)/(n1+n2-2)),n1+n2-2,lower.tail=FALSE),3)`.$
+
+Decisión:\blue{como el **$p$-valor** es prácticamente nulo, concluimos que tenemos evidencias suficientes para rechazar la hipótesis nula y por tanto hay diferencias   en el consumo medio entre la tarifa BigA y la BigB}.
+</div>
+
+
+
+
+## Ejemplo  contraste de  medias emparejadas, comparación de dos algoritmos de fidelización.
+
+<div class="example">
+**Ejemplo de medias emparejadas**
+
+Disponemos de \blue{dos algoritmos de fidelización de clientes de un  juego  para móviles mediante el regalo de tiempo sin anuncios  o vidas en el  juego}. Los dos producen resultados de la misma calidad.
+
+Estamos interesados en saber cuál de los dos algoritmos es *más eficiente*, en el sentido de consumir menos en nuestros servidores al dar  un tiempo de ejecución más corto. Suponemos que dichos \red{tiempos de ejecución siguen leyes normales}.
+
+Tomamos una muestra de  jugadores y les aplicamos los dos algoritmos, anotando los tiempos de ejecución sobre cada jugador.
+
+</div>
+
+
+
+
+## Ejemplo  contraste de  medias emparejadas, comparación de dos algoritmos de fidelización.
+
+<div class="example">
+
+Los resultados obtenidos son:
+
+
+
+\scriptsize
+</div>
+<div class="center">
+|  | 1| 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+|--|--|---|---|---|---|---|---|---|---|----|
+algoritmo 1 | 8.1 | 11.9 | 11.4 | 12.9 | 9.0 | 7.2 | 12.4 | 6.9 | 8.9 | 8.3 |
+algoritmo 2 | 6.9 | 6.7 | 8.3 | 8.6 | 18.9 | 7.9 | 7.4 | 8.7 | 7.9 | 12.4 |
+diferencias | 1.2 | 5.2 | 3.1 | 4.3 | -9.9 | -0.7 | 5.0 | -1.8 | 1.0 | -4.1 |
+\normalsize
+</div>
+
+
+```{r,echo=FALSE}
+diferencias = c( 1.2, 5.2, 3.1, 4.3, -9.9, -0.7, 5.0, -1.8, 1.0, -4.1)
+```
+
+
+
+## Ejemplo  contraste de  medias emparejadas, comparación de dos algoritmos de fidelización.
+<div class="example-sol">
+La media y la desviación típica muestrales de las diferencias son $\overline{d}=`r mean(diferencias)`,$ $ s_d = `r round(sd(diferencias),3)`.$
+
+Queremos contrastar la igualdad de medias con el test que corresponda. Y si son diferentes, decidir cuál tiene mayor tiempo de ejecución.
+
+Queremos realizar el contraste siguiente:
+$$
+\left\{\begin{array}{l}
+H_0:\mu_1=\mu_2,\\
+H_1:\mu_1\neq \mu_2,
+\end{array}\right.
+$$
+donde $\mu_1$ y $\mu_2$ son los tiempos de ejecución de los algoritmos 1 y 2, respectivamente.
+
+
+</div>
+
+
+
+
+## Ejemplo  contraste de  medias emparejadas, comparación de dos algoritmos de fidelización.
+
+<div class="example">
+Escribimos el contraste anterior en función de $\mu_d$, la media de las diferencias de los tiempos de ejecución entre los dos algoritmos:
+$$
+\left\{\begin{array}{l}
+H_0:\mu_d=0,\\
+H_1:\mu_d\neq 0.
+\end{array}\right.
+$$
+
+
+
+</div>
+
+## Ejemplo  contraste de  medias emparejadas, comparación de dos algoritmos de fidelización.
+<div class="example-sol">
+
+El **estadístico de contraste** para el contraste anterior es $T=\frac{\overline{d}}{ {S}_d/\sqrt{n}},$
+que tiene distribución $t_{n-1}=t_{`r length(diferencias)-1`}$. 
+
+Dicho estadístico toma el siguiente valor usando los valores muestrales: $t_0=\frac{`r mean(diferencias)`}{`r round(sd(diferencias),3)`/\sqrt{`r length(diferencias)`}}=`r round(mean(diferencias)/(sd(diferencias)/sqrt(length(diferencias))),3)`.$
+
+El **$p$-valor** del contraste anterior será: $p=2\cdot p(t_{`r length(diferencias)-1`} > |`r round(mean(diferencias)/(sd(diferencias)/sqrt(length(diferencias))),3)`|) =`r round(2*pt(mean(diferencias)/(sd(diferencias)/sqrt(length(diferencias))),length(diferencias)-1,lower.tail=FALSE),3)`.$
+
+Es un valor grande. \blue{Por tanto, no tenemos evidencias suficientes para rechazar la  hipótesis nula y concluimos que los tiempos de ejecución de los dos algoritmos es el mismo}.
+
+</div>
+

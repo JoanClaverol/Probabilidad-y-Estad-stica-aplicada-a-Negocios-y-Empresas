@@ -1,0 +1,459 @@
+---
+title: "Tema 4 - Variables Aleatorias continuas"
+author: "Ricardo Alberich, Juan Gabriel Gomila y  Arnau Mir"
+date: 
+runtime: shiny
+output: 
+  ioslides_presentation: 
+    css: Mery_style.css
+    keep_md: no
+    logo: Images/matriz_mov.gif
+    widescreen: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+# Variables aleatorias continuas
+
+## Variables aleatorias continuas definición.
+
+* Las variables aleatorias **continuas**  toman  valores en intervalos.
+ 
+* Lo más habitual es que estas variables tengan función de distribución continua y
+derivable.
+
+* En general, dado un valor $x_0$, $P(X=x_0)=0$ por lo que no nos es útil definir *función de probabilidad*.
+
+* En general tendremos que $P(X<x_0)=P(X\leq x_0)$.
+* Por otra parte podemos utilizar una regla parecida del
+cociente entre casos favorables y casos posibles de Laplace  pero en
+este caso el conteo se hace por la *medida*  de los casos
+posibles partida por la *medida* de los casos favorables.
+* Veamos un ejemplo de v.a. continua, que ampliaremos en el tema siguiente, en el que se utilizan todos estos conceptos.
+
+
+
+
+## Ejemplo: Distribución uniforme en $[0,1]$.
+
+<div class="example"> 
+
+**Ejemplo: número aleatorio entre $0$ y $1$** 
+
+Supongamos que elegimos un número al azar en el intervalo $[0,1]$.
+
+Consideremos la v.a. continua $X=$ número elegido.
+</div>
+
+<div class="example-sol">
+
+Su función de distribución es 
+
+$$
+F_{X}(x)=
+\left\{
+\begin{array}{ll}
+0, & \mbox{si } x\leq 0,\\
+x, & \mbox{si } 0<x<1,\\
+1, & \mbox{si } x\geq 1.
+\end{array}
+\right.
+$$
+
+consideremos
+
+* C.F. *longitud favorable*  que es $x-0$,
+* C.P. *longitud posible* que es $1-0$,
+
+luego 
+
+$$P(X\leq x)=\frac{C.F.}{C.P.}=\frac{x-0}{1-0}=x.$$
+</div>
+
+## Gráfica de la función de distribución uniforme
+
+```{r figUNIF, fig.align='center',echo=FALSE}
+curve(punif(x,0,1),xlim=c(-1,2),col="blue",
+      main="Función de distribución de una v.a. uniforme en el intervalo unidad.")
+```
+
+
+## Función de densidad
+
+<l class="definition"> Función de densidad </l> 
+
+Una función $f:\mathbb{R}\to\mathbb{R}$ es una función de densidad sobre $\mathbb{R}$ si cumple que
+
+
+* $f_{X}(x)\geq 0$ para todo $x \in\mathbb{R}.$
+* $f$ es continua salvo a lo más en una cantidad finita de puntos sobre
+cada intervalo acotado de $\mathbb{R}$.
+* $\displaystyle\int\limits_{-\infty}^{+\infty} f_{X}(x) dx=1.$
+
+## Función de distribución de una variable aleatoria.
+
+<l class="definition"> **Función de distribución de una variable aleatoria** </l>
+
+Sea $X$ una v.a. con función de distribución $F_X$. Sea $f:\mathbb{R}\to\mathbb{R}$ una función de densidad tal que
+
+$$F_X(x)=P(X\leq x)=\displaystyle\int_{-\infty}^{x} f_X(t)\ dt.\mbox{ para todo } x\in\mathbb{R},$$
+
+Entonces $X$ es una variable aleatoria continua y $f_X$ es la densidad de la v.a. $X$.
+
+
+##  Dominio de una variable aleatoria continua
+
+El conjunto $D_X=\{x\in\mathbb{R}| f_X(x)>0\}$ recibe el nombre de <l class="definition"> soporte o dominio de la
+variable aleatoria continua</l> y se interpreta como su conjunto de resultados posibles.
+
+
+<div class="example">
+**Ejemplo:**
+
+En nuestro  ejemplo $X\equiv U(0,1)$ la función $f_X$ es una densidad
+
+$$
+f_{X}(x)=\left\{
+\begin{array}{ll}
+0, & \mbox{si } x\leq 0,\\
+1, & \mbox{si } 0 < x < 1,\\
+0, & \mbox{si } 1\leq x.
+\end{array}\right.
+$$
+
+su dominio que es $D_X=(0,1)$ y es la densidad de $X$, en efecto:
+
+</div>
+
+## Ejemplo
+
+<div class="example-sol">
+
+$$
+f_{X}(x)=\left\{
+\begin{array}{ll}
+0, & \mbox{si } x\leq 0,\\
+1, & \mbox{si } 0 < x < 1,\\
+0, & \mbox{si } 1\leq x.
+\end{array}\right.
+$$
+
+* Si $x \leq 0$ entonces $\displaystyle\int_{-\infty}^x f_X(t) dt = 0.$
+
+* Si $0\leq x\leq 1$ entonces $\displaystyle\int_{-\infty}^x f_X(t) dt = \int_0^x 1 dt = x.$
+
+* Si $x\geq 1$  entonces $\displaystyle\int_{-\infty}^x f_X(t) dt = \int_0^1 1 dt = 1.$
+
+
+Por lo tanto,  $F_X(x)=\displaystyle\int_{-\infty}^x f_X(t) dt$ para todo $x\in\mathbb{R}.$
+
+</div>
+
+##  Ejemplo
+
+
+<div class="example-sol">
+
+
+```{r fig.align="center",  fig_caption="Función de densidad de una v.a. uniforme en el intervalo$(0,1)$",echo=FALSE}
+curve(dunif(x,0,1),xlim=c(-0.5,1.5),col="blue",
+      main="Densidad de la distribución uniforme en [0,1]")
+```
+</div>
+
+## Gráficas interactivas  $U(a,b)$
+
+```{r uniforme_plots1_interactivo, echo = FALSE}
+fluidPage(
+fluidRow(
+  column(4,
+         sliderInput("a1", label = "Parámetro a",
+              min = -5, max = 1, value =0 , step = 0.1)
+         ),
+  column(4,
+          sliderInput("b1", label = "Parámetro b",
+                     min = 1, max = 5, value = 1, step = 0.1)
+         ),
+  column(4,
+         sliderInput("x1", label="x", value=0.5, min = -5, max = 5, step = 0.1)
+         )
+  
+)
+)
+
+renderPlot({
+  a=input$a1
+  b=input$b1
+  x=input$x1
+  par(mfrow=c(1,2))
+  #a=0;b=1;x=0.25
+  xx=c(seq(min(a,x),min(b,x),by=0.001))
+  curve(dunif(x,a,b),xlim=c(a-0.25,b+0.25),ylim=c(0,max(1/(b-a)+0.05,0.1)),col="blue",main=paste0("Función densidad U(",a,",",b,")"),
+  ylab=expression(f[X](x)))
+  axis(side=1, at=c(a,x,b), labels = TRUE)
+  polygon(x=c(a,xx,min(x,b)),y=c(0,dunif(xx,a,b),0),
+          density=20,col="skyblue")
+  curve(punif(x,a,b),xlim=c(a-1,b+1),ylim=c(0,1.1),col="blue",main=paste0("Función de distribución U(",a,",",b,")"),
+  ylab=expression(F[X](x)))
+  segments(x0=x,y0=0,x1=x,y1=punif(x,a,b),col="red",lty=2)
+  segments(x0=a-1.01,y0=punif(x,a,b),x1=x,y1=punif(x,a,b),col="red",lty=2)
+  axis(side=2, at=c(0,round(punif(x,a,b),1),2), labels = TRUE)
+  axis(side=1, at=c(a,x,b), labels = TRUE)
+  par(mfrow=c(1,1))
+})
+
+```
+
+
+
+
+## Propiedades  de la función de densidad
+
+La función de densidad nos permite calcular diversas probabilidades.
+
+<l class="prop">Propiedades de la función de densidad </l> 
+
+* Sea $X$ una v.a. continua con función de distribución $F_X$ y de
+densidad $f_X$, entonces
+$$\begin{eqnarray*}
+P(a< X< b) &=&  P(a<X\leq b)= P(a\leq X< b)=\\
+ & & P(a\leq X\leq b)= \displaystyle\int_{a}^b f_X(x) dx.
+\end{eqnarray*}
+$$
+* Si $A$ es un subconjunto  adecuado de $\mathbb{R}$ entonces 
+$$P(X\in A)=\displaystyle\int_{A} f(x) dx=\displaystyle\int_{A\cap D_X} f(x) dx.
+$$
+
+
+
+
+## Utilidad de la función de densidad
+
+<l class="prop">Propiedades de la función de densidad </l> 
+
+Sea $X$ una v.a. continua con función de distribución $F_X$ y de densidad $f_X$, entonces:
+
+* Si $f_X$ es continua en un punto $x$, $F_X$ es derivable en ese punto y
+$F_X'(x)=f_X(x).$
+* $P(X=x)=0$ para todo $x\in\mathbb{R}.$
+
+
+# Esperanza y varianza
+
+## Esperanza y varianza 
+
+<l class="definition">Esperanza v.a. continuas </l>
+
+* Su esperanza es:
+$$E(X)=\displaystyle\int\limits_{-\infty}^{+\infty} x\cdot f_{X}(x)dx.$$
+* Si $g(x)$ es una función de la variable $X$ entonces:
+$$E(g(X))=\displaystyle\int\limits_{-\infty}^{+\infty} g(x)\cdot f_{X}(x)dx.$$
+
+## Esperanza y varianza
+
+<l class="definition"> Varianza v.a. continuas </l>
+
+
+* Su varianza es:
+$$
+Var(X)=\sigma_{X}^2=E((X-\mu_{X})^2)=
+\displaystyle\int\limits_{-\infty}^{+\infty} (x-\mu_{X})^2 \cdot f_{X}(x)dx.
+$$
+* Su desviación típica es:  $$\sigma_{X}=+\sqrt{\sigma_{X}^2}.$$
+
+
+## Propiedades
+
+<l class="prop"> Propiedades </l>
+
+* $\sigma_{X}^2\geq 0$.
+* $Var(cte)=E(cte^2)-(E(cte))^2= cte^2 - cte^2=0$.
+* $\displaystyle Var(X)=E(X^2)-\mu_{X}^2=\int_{-\infty}^{+\infty}x^2\cdot  f_{X}(x)dx - \mu_{X}^2.$
+* El mínimo de $E((X-C)^2)$ se alcanza cuando $C=E(X)$ y es $Var(X)$.
+
+
+## Transformaciones lineales de v.a. continuas
+
+<l class="prop">Proposición</l>
+
+Sea $X$ una v.a. continua con $E(X)=\mu_{X}$ y $Var(X)=\sigma_{X}^2$ sea $Y=a+b X$, donde
+$a,b\in\mathbb{R}$, es una nueva v.a. continua obtenida mediante una transformación lineal de $X$.
+Se verifican las mismas propiedades que en el caso discreto:
+
+* $E(Y)=E(a+b\cdot  X)=a+b\cdot  E(X)$.
+* $Var(Y)=Var(a+b\cdot  X)=b^2 \cdot  Var(X)$.
+* $\sigma_{Y}=|b|\cdot  \sigma_{X}$.
+* $Z=\frac{X-\mu_{X}}{\sigma_{X}}$ es una transformación
+lineal de $X$ de forma que $$E(Z)=0 \mbox{ y } Var(Z)=1$$
+
+# Distribuciones continuas notables
+
+
+## V.a con distribución uniforme, $U(a,b)$
+
+Distribución uniforme $X$ | $U(a,b)$
+----:|:-----
+Dominio | $D_X=(a,b)$
+$f_{X}(x)$ |$\left\{\begin{array}{ll}\frac1{b-a}, & \mbox{si } a<x<b,\\ 0,  & \mbox{en cualquier otro caso.}\end{array} \right.$
+$F_X(x)=P(X\leq X)=$ |  $\left\{\begin{array}{ll} 0, & \mbox{ si } x\leq a\\\frac{x-a}{b-a}, & \mbox{ si } a\leq x\leq b,\\1, & \mbox{ si } b\leq x.\end{array}\right.$
+$E(X)=$ |$\frac{a+b}2$
+$Var(X)=$| $\frac{(b-a)^2}{12}$
+
+
+## Gráficas $U(0,1)$
+
+
+```{r grafica_unif10_vista, echo=FALSE,fig.align='center'}
+par(mfrow=c(1,2))
+a=0;b=1
+curve(dunif(x,a,b),xlim=c(a-0.25,b+0.25),ylim=c(0,max(1/(b-a)+0.05,0.1)),
+      col="blue",main=paste0("Función densidad  U(",a,",",b,")"),
+      ylab=paste0("dunif(x,",a,", ",b,")"))
+curve(punif(x,a,b),xlim=c(a-1,b+1),ylim=c(0,1.1),
+      col="blue",main=paste0("Función de distribución U(",a,",",b,")"),
+      ylab=paste0("punif(x,",a,", ",b,")"))
+```
+
+
+## V.a. con distribución exponencial, $Exp(\lambda)$
+
+Distribución exponencial $X$ | $Exp(\lambda)$
+------:|:------
+$D_X=$  | $(0,+\infty)$ 
+$f_{X}(x)=$ | $\left\{\begin{array}{ll}
+\lambda \cdot e^{-\lambda x} & \mbox{ si }  x>0\\
+0 & \mbox{ si } x\leq 0
+\end{array}\right.$
+$F_X(x)=P(X\leq x)=$ | $\left\{\begin{array}{ll} 0 &\mbox{si } x\leq 0\\
+1-e^{-\lambda x}& \mbox{si } x>0\end{array}\right.$
+$E(X)=\frac{1}{\lambda}$ | $Var(X)=\frac{1}{\lambda^2}$
+
+## Gráficas densidad y distribución $Exp(\lambda=10)$
+
+```{r echo=FALSE,fig.align="center"}
+lambda=10
+par(mfrow=c(1,2))
+curve(dexp(x,rate=lambda),xlim=c(-0.05,round(qexp(0.99,rate=lambda,2),2)+0.25),
+      ylim=c(0,dexp(0,lambda)+0.1),col="blue",
+      main=paste0("Función densidad Exp(",lambda,")"),
+      ylab=paste0("dexp(x,rate=",lambda,")"))
+curve(pexp(x,rate=lambda),xlim=c(-0.05,qexp(0.999,10)),ylim=c(0,1.1),col="blue",
+      main=paste0("Función de distribución Exp(",lambda,")"),
+      ylab=paste0("pexp(x,rate=",lambda,")"))
+par(mfrow=c(1,1))
+```
+
+
+
+## V.a. con distribución normal, $N(\mu,\sigma)$
+
+Distribución normal $X$  | $N(\mu,\sigma)$ 
+-----:|:--------
+$D_X=$ | $\mathbb{R}=(-\infty,+\infty)$
+$f_{X}(x)$ |$=\frac{1}{\sqrt{2\pi\cdot\sigma^2}}\cdot e^{\frac{-(x-\mu)^2}{2\cdot \sigma^2}}\mbox{ para todo }x\in \mathbb{R}.$
+$F_X(x)=P(X\leq X)=$ | Usar algún software estadístico
+$E(X)=\mu.$ | $Var(X)=\sigma^2.$
+
+## Propiedades de la distribución normal.
+
+```{r echo=FALSE,fig.align='center'}
+curve(dnorm(x,0,1),xlim=c(-4,4),ylim=c(0,1/sqrt(2*pi)),col="blue",xaxt="n",yaxt="n",
+      ylab=expression(f(x)),cex=0.5)
+axis(1,at=c(-1,0,1),labels =c(expression(mu-x),expression(mu),expression(mu-x)))
+axis(2,at=c(0,1/sqrt(2*pi)),labels =c(0,expression( paste(frac(1, sqrt(2 * pi))))))
+segments(x0=-1,y0=0,x1=-1,y1=dnorm(-1,0,1),col="red",lty=2)
+segments(x0=-1,y0=dnorm(-1,0,1),x1=-4.4,y1=dnorm(-1,0,1), col="red",lty=2)
+segments(x0=1,y0=0,x1=1,y1=dnorm(1,0,1),col="red",lty=2)
+segments(x0=1,y0=dnorm(1,0,1),x1=-4.4,y1=dnorm(1,0,1), col="red",lty=2)
+text(x = -3,y=dnorm(-0.9),expression(f(mu-x)==f(mu+x)))
+```
+
+## Propiedades de la distribución normal.
+
+```{r echo=FALSE,fig.align='center'}
+par(mfrow=c(1,2))
+x=-2
+xx=seq(-4,x,by=0.01)
+curve(dnorm(x,0,1),xlim=c(-4,4),ylim=c(0,1/sqrt(2*pi)),col="blue",xaxt="n",yaxt="n",
+      ylab=expression(f(x)),cex=0.5)
+text(-3,dnorm(-2),expression(F(mu-x)))
+polygon(x=c(-4,xx,x),y=c(0,dnorm(xx, 0,1),0), density=20,col="skyblue")
+axis(1,at=c(-2,0),labels =c(expression(mu-x),expression(mu)))
+
+x=2
+xx=seq(-4,x,by=0.01)
+curve(dnorm(x,0,1),xlim=c(-4,4),ylim=c(0,1/sqrt(2*pi)),col="blue",xaxt="n",yaxt="n",
+      ylab=expression(f(x)),cex=0.5)
+polygon(x=c(-4,xx,x),y=c(0,dnorm(xx, 0,1),0), density=20,col="skyblue")
+axis(1,at=c(0,2),labels =c(expression(mu),expression(mu+x)))
+xx2=seq(x+0.01,4,by=0.01)
+polygon(x=c(x,xx2,4),y=c(0,dnorm(xx2, 0,1),0), density=20,col="red")
+text(-3,dnorm(-2),expression(F(mu+x)))
+text(3,dnorm(-2),expression(1-F(mu+x)))
+par(mfrow=c(1,1))
+```
+
+
+## Transformaciones lineales de variables aleatorias normales
+
+
+<l class="prop"> Propiedad: transformación lineal la distribución  normal </l>
+
+Sea $X$ una variable  $N(\mu,\sigma)$  entonces la variable $Y=a X+b$ con
+$a\not=0,b\in\mathbb{R}$ tiene distribución $N(a\mu+b, |a| \sigma)$
+
+
+
+En particular si  $X$ sigue una $N(\mu,\sigma)$, tomando $a=\frac1{\sigma}$ y $b=
+\frac{-\mu}{\sigma}$  obtenemos la tipificación  o estandarización  de la v.a. 
+
+$$Z={{X-\mu}\over {\sigma}}$$
+se distribuye $N(0,1)$, es decir $E(X)=0$ y $Var(X)=1$.
+
+## Gráficas interactivas parámetros normal
+
+
+```{r NORMAL_plots1_interactivo, echo = FALSE}
+fluidPage(
+fluidRow(
+  column(3,
+         sliderInput("m1", label = "mu1",
+              min = -10, max = 10, value =0 , step = 0.05)
+         ),
+  column(3,
+          sliderInput("s1", label = "sigma1",
+                     min =0.1, max = 5, value = 1, step = 0.1)
+         ),
+  column(3,
+         sliderInput("m2", label="mu2", value=4, min = -10, max = 10, step = 0.05)
+         ),
+  column(3,
+          sliderInput("s2", label = "sigma2",
+                     min =0.1, max = 5, value = 1, step = 0.1)
+         )
+  
+)
+)
+
+renderPlot({
+  m1=input$m1
+  m2=input$m2
+  s1=input$s1
+  s2=input$s2
+  mins2=min(c(s1^2,s2^2))
+m=min(c(qnorm(0.01,m1,s1),qnorm(0.01,m2,s2)))
+M=max(c(qnorm(0.99,m1,s1),qnorm(0.99,m2,s2)))
+
+curve(dnorm(x,m1,s1),xlim=c(m,M),ylim=c(0,1/sqrt(2*pi*mins2)),col="red",lty=1)
+legend("toplef",legend=c(expression(N(mu[1],sigma[1])),expression(N(mu[2],sigma[2]))),col=c("red","blue"),lty=c(1,2))
+curve(dnorm(x,m2,s2),add=TRUE,col="blue",lty=2)
+})
+
+```
+
+
+
