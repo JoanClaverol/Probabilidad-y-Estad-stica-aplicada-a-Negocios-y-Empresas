@@ -1,0 +1,422 @@
+---
+title: "Problemas de probabilidad"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1.  Una encuesta sobre los mejores destinos turísticos asiáticos mostró
+    que, de 70 personas, 23 ubicaron a Singapur en primer lugar,
+    mientras que 15 colocaron a Hong Kong en primer lugar, 11 colocaron
+    a Shanghai en primer lugar, 7 colocaron a Beijing en primer lugar y
+    el resto eligió Tokio. Sobre la base de estos datos, calcule lo
+    siguiente.
+
+    70 personas:
+
+    -   Singapur: 23
+
+    -   Hong Kong: 15
+
+    -   Shanghai: 11
+
+    -   Beijing: 7
+
+    -   Tokio: 14
+
+<!-- -->
+
+a.  La probabilidad de que el destino preferido sea una ciudad de China.
+    (En este caso específico, Hong Kong no se considera parte de China).
+
+```{python}
+singapur = 23
+hong_kong = 15
+shanghai = 11
+beijing = 7
+tokio = 14
+
+china = singapur + shanghai + beijing
+china / (china + tokio + hong_kong)
+```
+
+b.  La probabilidad de que el destino preferido no sea una ciudad china.
+    (En este caso, Hong Kong se considera una ciudad china, incluso si
+    está fuera de China).
+
+```{python}
+(china + hong_kong) / (china + hong_kong + tokio)
+```
+
+c.  La probabilidad de que el destino preferido sea Tokio.
+
+```{python}
+tokio / (china + hong_kong)
+```
+
+d.  La probabilidad de que el destino preferido no sea Singapur.
+
+```{python}
+(hong_kong + shanghai + beijing + tokio) / (china + hong_kong + tokio)
+```
+
+2.  Una compañía de seguros estimó que el 30% de todos los accidentes
+    automovilísticos fueron causados en parte por las condiciones
+    climáticas y que el 20% de todos los accidentes automovilísticos
+    involucraron lesiones corporales. Además, de los accidentes que
+    involucraron lesiones corporales, el 40% fueron causados en parte
+    por las condiciones climáticas.
+
+    Definimos los sucesos:
+
+    -   $AC : \text{accidente causados por condiciones climáticas}$
+    -   $AL : \text{accidentes con lesiones corporales}$
+
+    ¿Qué conocemos?
+
+|                          |                          |                                  |
+|----------------------|----------------------|----------------------------|
+| $P(AC) = 0.3$            | $P(AL) = 0.2$            | $P(AC \mid AL) = 0.4$            |
+| $P(\overline{AC}) = 0.7$ | $P(\overline{AL}) = 0.8$ | $P(\overline{AC} \mid AL) = 0.6$ |
+
+<!-- -->
+
+a.  ¿Cuál es la probabilidad de que un accidente elegido al azar haya
+    sido causado en parte por las condiciones climáticas y haya
+    involucrado lesiones corporales?
+
+$$
+P(AL \mid AC) = \frac{P(AC \cap AL)}{P(AC)}\\
+P(AC \cap AL) = P(AL \mid AC) * P(AC) = P(AC \mid AL) * P(AL)
+$$
+
+```{python}
+0.4 * 0.2
+```
+
+b.  ¿Son los eventos "causados en parte por las condiciones climáticas"
+    y las "lesiones corporales involucradas" independientes?
+
+    -   *"Diremos que los sucesos A y B son independientes si*
+        $P(A \cap B) = P(A) * P(B)$"
+
+        -   $P(AC \cap AL) = 0.4$
+        -   $P(AC) * P(AL) = 0.2 * 0.3 = 0.6$
+
+    -   No son independientes.
+
+c.  Si un accidente elegido al azar fue causado en parte por las
+    condiciones climáticas, ¿cuál es la probabilidad de que haya
+    involucrado lesiones corporales?
+
+$$
+P(AL \mid AC) = \frac{P(AC \cap AL)}{P(AC)}
+$$
+
+```{python}
+0.08 / 0.3
+```   
+
+d.  ¿Cuál es la probabilidad de que un accidente elegido al azar no haya
+    sido causado en parte por las condiciones climáticas y no haya
+    involucrado lesiones corporales?
+
+<!-- -->
+
+$$
+P(\overline{AL} \cap \overline{AC}) = 1 - P(AL \cup AC)\\
+P(\overline{AL} \cap \overline{AC}) = 1 - (P(AL) + P(AC) - P(AL \cap AC))
+$$
+
+```{python}
+1 - (0.2 + 0.3 - 0.08)
+```
+
+<!-- -->
+
+3.  Staff, Inc., una empresa de consultoría de gestión, está encuestando
+    al personal de Acme Ltd. Determina que el 35% de los analistas
+    tienen un MBA y que el 40% de todos los analistas tienen más de 35
+    años. Además, de los que tienen un MBA, el 30% tiene más de 35 años.
+
+Sucesos:
+
+-   $\text{MBA : analistas tienen un mba}$
+
+-   $\text{O35 : más de 35 años}$
+
+¿Qué sabemos?
+
+| $P(MBA) = 0.35$            | $P(O35) = 0.4$            | $P(O35 \mid MBA) = 0.3$            |
+|----------------------|----------------------|----------------------------|
+| $P(\overline{MBA}) = 0.65$ | $P(\overline{O35}) = 0.6$ | $P(\overline{O35} \mid MBA) = 0.7$ |
+
+a.  ¿Cuál es la probabilidad de que un analista elegido al azar tenga un
+    MBA y también sea mayor de 35 años?
+
+$$
+P(O35 \mid MBA) = \frac{P(MBA \cap O35)}{P(MBA)}\\
+P(MBA \cap O35) = 0.3 * 0.35 = 0.105
+$$
+
+b.  ¿Cuál es la probabilidad de que un analista mayor de 35 años elegido
+    al azar tenga un MBA?
+
+$$
+P(MBA \mid O35) = \frac{P(O35 \cap MBA)}{P(O35)} = \frac{0.105}{0.4} = 0.2625
+$$
+
+c.  ¿Cuál es la probabilidad de que un analista elegido al azar tenga un
+    MBA o sea mayor de 35 años?
+
+$$
+P(MBA \cup O35) = P(MBA) + P(O35) - P(MBA \cap 035) = 0.35 + 0.4 - 0.105 = 0.645
+$$
+
+d.  ¿Cuál es la probabilidad de que un analista elegido al azar que
+    tenga más de 35 años no tenga un MBA?
+
+$$
+P(\overline{MBA} \cup O35) = 1 - P(MBA \mid O35) = 1 - 0.2625 = 0.7375
+$$
+
+e.  ¿Son los eventos MBA y mayores de 35 años independientes?
+
+$P(MBA \cap O35) = P(MBA) * P(O35) \rightarrow 0.105 = 0.35 * 0.4 = 0.14$
+
+No son independientes.
+
+f.  ¿Son los eventos MBA y mayores de 35 años mutuamente excluyentes?
+
+No, dado que tenemos un valor para $P(MBA \cap O35) = 0.105$.
+
+4.  Se selecciona un jurado de 8 miembros de un panel compuesto por 8
+    hombres y 8 mujeres.
+
+<!-- -->
+
+a.  ¿Cuántas selecciones de jurados diferentes son posibles?
+
+$$
+N = C^{n}_{x} = C^{16}_{8} =  = \frac{n!}{x!*(n - x)!} = \frac{16!}{8!*(16 - 8)!}
+$$
+
+```{python}
+import math
+
+posibilidades = math.factorial(16) / (math.factorial(8) * math.factorial(8))
+posibilidades
+```
+
+b.  Si la elección se hace al azar, ¿cuál es la probabilidad de que la
+    mayoría de los miembros del jurado sean hombres?
+
+    ```{python}
+    # 5 hombres y 3 mujeres
+    case1 = (
+      # 5 men
+      math.factorial(8) / (math.factorial(5) * math.factorial(8 - 5)) * 
+      # 3 women
+      math.factorial(8) / (math.factorial(3) * math.factorial(8 - 3))
+    )
+
+    # 6 hombres y 2 mujeres
+    case2 = (
+      # 6 men
+      math.factorial(8) / (math.factorial(6) * math.factorial(8 - 6)) * 
+      # 2 women
+      math.factorial(8) / (math.factorial(2) * math.factorial(8 - 2))
+    )
+
+    # 7 hombres y 1 mujer
+    case3 = (
+      # 7 men
+      math.factorial(8) / (math.factorial(7) * math.factorial(8 - 7)) * 
+      # 1 women
+      math.factorial(8) / (math.factorial(1) * math.factorial(8 - 1))
+    )
+    # 8 hombres
+    case4 = (
+      # 8 men
+      math.factorial(8) / (math.factorial(8) * math.factorial(8 - 8)) * 
+      # 0 women
+      math.factorial(8) / (math.factorial(0) * math.factorial(8 - 0))
+    )
+
+    (case1 + case2 + case3 + case4) / posibilidades
+    ```
+
+<!-- -->
+
+5.  Las suscripciones a una revista en particular se clasifican como
+    regalo, renovación previa, correo directo y servicio de suscripción.
+    En enero, el 8% de las suscripciones que vencen fueron regalos; 41%,
+    renovación previa; 6%, correo directo; y el 45%, servicio de
+    suscripción. Los porcentajes de renovaciones en estas cuatro
+    categorías fueron 81%, 79%, 60% y 21%, respectivamente. En febrero
+    del mismo año, el 10% de las suscripciones vencidas fueron
+    obsequios; 57%, renovación previa; 24%, correo directo; y 9%,
+    servicio de suscripción. Los porcentajes de renovaciones fueron 80%,
+    76%, 51% y 14%, respectivamente. 1
+
+    Sucesos:
+
+    -   RE: "regalo"
+
+    -   RP: "renovación previa"
+
+    -   CD: "correo directo"
+
+    -   SS: "servicio de suscripción"
+
+    -   R: "renovación de la suscripción"
+
+<!-- -->
+
+a.  Encuentre la probabilidad de que se renueve una suscripción elegida
+    al azar que vence en enero.
+
+ENERO
+$$
+P(RE) = 0.08\\
+$$
+$$
+P(RP) = 0.41\\
+$$
+$$
+P(CD) = 0.06\\
+$$
+$$
+P(SS) = 0.45\\
+$$
+$$
+P(R \mid RE) = 0.81\\
+$$
+$$
+P(R \mid RP) = 0.79\\
+$$
+$$
+P(R \mid CD) = 0.6\\
+$$
+$$
+P(R \mid SS) = 0.21
+$$ 
+
+
+La suma de todas las probabilidades para todos los tipos de
+subscripciones: 
+
+$$
+P(R) = P(R \cap RE) + P(R \cap RP) + P(R \cap CD) + P(R \cap SS) =
+$$
+
+$$
+P(R \mid RE)*P(RE) + P(R \mid RP)*P(RP) + P(R \mid CD)*P(CD) + P(R \mid SS)*P(SS) = \\0.5192
+$$
+
+```{python}
+0.08*0.81 + 0.41*0.79 + 0.06*0.6 + 0.45*0.21
+```
+
+b.  Encuentre la probabilidad de que se renueve una suscripción elegida
+    al azar que vence en febrero.
+
+FEBRERO
+$$
+P(RE) = 0.1\\
+$$
+$$
+P(RP) = 0.57\\
+$$
+$$
+P(CD) = 0.24\\
+$$
+$$
+P(SS) = 0.09\\
+$$
+$$
+P(R \mid RE) = 0.8\\
+$$
+$$
+P(R \mid RP) = 0.76\\
+$$
+$$
+P(R \mid CD) = 0.51\\
+$$
+$$
+P(R \mid SS) = 0.14
+$$
+
+
+```{python}
+0.1*0.8 + 0.57*0.76 + 0.24*0.51 + 0.09*0.14
+```
+
+c.  Verifique que la probabilidad del apartado b) sea mayor que la del
+    apartado a). Si el editor de la revista tiene un presupuesto para
+    invertir en publicidad de la revista, ¿dónde crees que es mejor que
+    invierta, en enero o en febrero?
+
+Creo que lo mejor es invertir en enero para potenciar los resultados en
+febrero, donde ya tenemos una mayor probabilidad de renovación.
+
+<!-- -->
+
+6.  Usted es responsable de detectar el origen del error cuando falla un
+    sistema informático. A partir de su análisis, sabe que la fuente del
+    error puede ser la unidad de disco, la memoria de la computadora o
+    el sistema operativo. Sabe que el 50% de los errores son errores de
+    la unidad de disco, el 30% son errores de memoria de la computadora
+    y el resto son errores del sistema operativo. Según los estándares
+    de rendimiento de los componentes, sabe que cuando ocurre un error
+    en la unidad de disco, la probabilidad de falla es 0.60, cuando
+    ocurre un error de memoria de la computadora, la probabilidad de
+    falla es 0.7 y cuando ocurre un error del sistema operativo, la
+    probabilidad de falla es 0.3. Dada la información de los estándares
+    de rendimiento de los componentes, ¿cuál es la probabilidad de que
+    se produzca un error en la unidad de disco, dado que ocurrió una
+    falla?
+
+Sucesos:
+
+-   D: disco
+-   M: memoria
+-   S: sistema operativo
+-   F: computadora ha fallado
+
+¿Qué sabemos?
+
+$$
+P(D) = 0.5\\
+$$
+$$
+P(M) = 0.3\\
+$$
+$$
+P(S) = 0.2\\
+$$
+$$
+P(F \mid D) = 0.6\\
+$$
+$$
+P(F \mid M) = 0.7\\
+$$
+$$
+P(F \mid S) = 0.3\\
+$$
+
+$$
+P(D \mid F) = \frac{P(F \cap D)}{P(F)} =
+\frac{P(F \cap D)}{P(F \cap D) + P(F \cap M) + P(F \cap S)} =
+$$
+
+$$
+\frac{P(F \mid D) * P(D)}{P(F \mid D) * P(D) + P(F \mid M) * P(M) + P(F \mid S) * P(S)} = 0.526
+$$
+
+```{python}
+round((0.6 * 0.5)/((0.5 * 0.6) + (0.3 * 0.7) + (0.2 * 0.3)), 3)
+```
+

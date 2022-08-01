@@ -1,0 +1,73 @@
+---
+title: "Calculo de probabilidades"
+output:
+  pdf_document: default
+---
+
+```{python}
+import pandas as pd
+```
+
+##### 1. Calcula cuantas formas hay de elegir dos vocales ordenadas
+
+```{python}
+vocales = ['a','e','i','o','u']
+
+from itertools import permutations
+
+perm = permutations(vocales, 2)
+len(list(perm))
+```
+
+##### 2. En recursos humanos tienen 8 candidatos para 4 puestos de trabajo. de los cuales 5 son hombres y 3 mujeres. Como todos los CVs son iguales, decidimos hacer una selección aleatoria de los candidatos. ¿Cuál es la probabilidad de que no contratemos a ninguna mujer?
+
+```{python}
+candidatos = ['m']*5 + ['w']*3
+candidatos
+```
+
+```{python}
+candidatos = ['m']*5 + ['w']*3
+candidatos
+
+# P(m, m, m, m): probabilidad de todo hombres
+perm = permutations(candidatos, 4)
+n = len(list(permutations(candidatos, 4)))
+
+n_all_man = 0 
+for p in list(perm): 
+    n_all_man += p.count('m') == 4
+
+n_all_man / n
+```
+
+```{python}
+# check 
+1/14
+```
+
+#### 3. Analizamos dos días consecutivos de IBEX para calcular cuál es la probabilidad que el mercado suba en al menos uno de los dos días estudiados. ¿Podrías intentar extrapolar la fórmula a que el mercado suba al menos uno de tres días estudiados, de cuatro, y así sucesivamente?
+
+```{python}
+# correccion
+# s: subida
+# ns: no subida
+reaccion_mercado = ['s','ns']
+
+from itertools import product
+options = [list(option) for option in list(product(reaccion_mercado, repeat=2))]
+options
+
+n_subidas_mercado = 0
+for option in options: 
+    if 's' in option: 
+        n_subidas_mercado += 1
+
+n_subidas_mercado / len(options)
+```
+
+formula:
+
+$$
+P(1\ subida) = 1 - P(ninguna\ subida) = 1 - \frac{1}{2^n} 
+$$
